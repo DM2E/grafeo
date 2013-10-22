@@ -1,12 +1,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<groupId>eu.dm2e.ws</groupId>
-	<artifactId>dm2e-ws</artifactId>
-	<packaging>jar</packaging>
-	<version>1.0-SNAPSHOT</version>
-	<name>dm2e-ws</name>
-	<distributionManagement>
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>eu.dm2e.grafeo</groupId>
+    <artifactId>grafeo</artifactId>
+    <packaging>jar</packaging>
+    <version>1.0-SNAPSHOT</version>
+    <name>grafeo</name>
+    <distributionManagement>
         <snapshotRepository>
             <name>LSKI Snapshot Repository</name>
             <id>lski-snapshots</id>
@@ -37,113 +37,113 @@
             </snapshots>
         </pluginRepository>
     </pluginRepositories>
-	<dependencies>
-		<!-- uncomment this to get JSON support: <dependency> <groupId>com.sun.jersey</groupId> 
-			<artifactId>jersey-json</artifactId> <version>${jersey-version}</version> 
-			</dependency> -->
-		<!-- uncomment this to get Fastinfoset support: <dependency> <groupId>com.sun.jersey</groupId> 
-			<artifactId>jersey-fastinfoset</artifactId> <version>${jersey-version}</version> 
-			</dependency> -->
-		<!-- uncomment this to get ATOM support: <dependency> <groupId>com.sun.jersey</groupId> 
-			<artifactId>jersey-atom</artifactId> <version>${jersey-version}</version> 
-			</dependency> -->
-		<!-- uncomment this to get multipart MIME types support: <dependency> <groupId>com.sun.jersey.contribs</groupId> 
-			<artifactId>jersey-multipart</artifactId> <version>${jersey-version}</version> 
-			</dependency> -->
-		<!--<dependency>
-			<groupId>org.apache.jena</groupId>
-			<artifactId>jena-tdb</artifactId>
-			<version>0.10.0</version>
-		</dependency>                  -->
+    <dependencies>
+        <!-- uncomment this to get JSON support: <dependency> <groupId>com.sun.jersey</groupId>
+              <artifactId>jersey-json</artifactId> <version>${jersey-version}</version>
+              </dependency> -->
+        <!-- uncomment this to get Fastinfoset support: <dependency> <groupId>com.sun.jersey</groupId>
+              <artifactId>jersey-fastinfoset</artifactId> <version>${jersey-version}</version>
+              </dependency> -->
+        <!-- uncomment this to get ATOM support: <dependency> <groupId>com.sun.jersey</groupId>
+              <artifactId>jersey-atom</artifactId> <version>${jersey-version}</version>
+              </dependency> -->
+        <!-- uncomment this to get multipart MIME types support: <dependency> <groupId>com.sun.jersey.contribs</groupId>
+              <artifactId>jersey-multipart</artifactId> <version>${jersey-version}</version>
+              </dependency> -->
+        <!--<dependency>
+              <groupId>org.apache.jena</groupId>
+              <artifactId>jena-tdb</artifactId>
+              <version>0.10.0</version>
+          </dependency>                  -->
         <dependency>
             <groupId>org.apache.jena</groupId>
             <artifactId>jena-fuseki</artifactId>
             <version>0.2.7</version>
             <exclusions>
-            	<exclusion>
-            		<artifactId>slf4j-log4j12</artifactId>
-            		<groupId>org.slf4j</groupId>
-            	</exclusion>
-            	<exclusion>
-            		<artifactId>log4j</artifactId>
-            		<groupId>log4j</groupId>
-            	</exclusion>
+                <exclusion>
+                    <artifactId>slf4j-log4j12</artifactId>
+                    <groupId>org.slf4j</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>log4j</artifactId>
+                    <groupId>log4j</groupId>
+                </exclusion>
             </exclusions>
         </dependency>
-        <dependency>
-            <groupId>org.apache.jena</groupId>
-            <artifactId>jena-arq</artifactId>
-            <version>2.10.1</version>
-            <exclusions>
-            	<exclusion>
-            		<artifactId>slf4j-log4j12</artifactId>
-            		<groupId>org.slf4j</groupId>
-            	</exclusion>
-            	<exclusion>
-            		<artifactId>log4j</artifactId>
-            		<groupId>log4j</groupId>
-            	</exclusion>
-            </exclusions>
-        </dependency>
+        <!--       <dependency>
+          <groupId>org.apache.jena</groupId>
+          <artifactId>jena-arq</artifactId>
+          <version>2.10.1</version>
+          <exclusions>
+              <exclusion>
+                  <artifactId>slf4j-log4j12</artifactId>
+                  <groupId>org.slf4j</groupId>
+              </exclusion>
+              <exclusion>
+                  <artifactId>log4j</artifactId>
+                  <groupId>log4j</groupId>
+              </exclusion>
+          </exclusions>
+      </dependency>  -->
 
         <dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.8.2</version>
-            <!-- <scope>test</scope> -->
-		</dependency>
-        <dependency>
-        	<groupId>net.sf.saxon</groupId>
-        	<artifactId>Saxon-B</artifactId>
-        	<version>9.0</version>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.8.2</version>
+            <!--  <scope>test</scope>  -->
+        </dependency>
+        <!--    <dependency>
+          <groupId>net.sf.saxon</groupId>
+          <artifactId>Saxon-B</artifactId>
+          <version>9.0</version>
 
+      </dependency>  -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>1.3.2</version>
         </dependency>
         <dependency>
-        	<groupId>org.apache.commons</groupId>
-        	<artifactId>commons-io</artifactId>
-        	<version>1.3.2</version>
+            <groupId>commons-configuration</groupId>
+            <artifactId>commons-configuration</artifactId>
+            <version>1.9</version>
+        </dependency>
+        <!-- <dependency>
+       <groupId>commons-lang</groupId>
+       <artifactId>commons-lang</artifactId>
+       <version>2.6</version>
+   </dependency>     -->
+        <dependency>
+            <groupId>commons-beanutils</groupId>
+            <artifactId>commons-beanutils</artifactId>
+            <version>1.7.0</version>
+        </dependency>
+        <!--  <dependency>
+<groupId>commons-validator</groupId>
+<artifactId>commons-validator</artifactId>
+<version>1.4.0</version>
+</dependency>
+<dependency>
+<groupId>com.googlecode.grep4j</groupId>
+<artifactId>grep4j</artifactId>
+<version>1.7.5</version>
+</dependency>
+<dependency>
+<groupId>net.lingala.zip4j</groupId>
+<artifactId>zip4j</artifactId>
+<version>1.3.1</version>
+</dependency>            -->
+        <dependency>
+            <groupId>joda-time</groupId>
+            <artifactId>joda-time</artifactId>
+            <version>2.1</version>
         </dependency>
         <dependency>
-        	<groupId>commons-configuration</groupId>
-        	<artifactId>commons-configuration</artifactId>
-        	<version>1.9</version>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.2.2</version>
         </dependency>
-        <dependency>
-        	<groupId>commons-lang</groupId>
-        	<artifactId>commons-lang</artifactId>
-        	<version>2.6</version>
-        </dependency>
-        <dependency>
-        	<groupId>commons-beanutils</groupId>
-        	<artifactId>commons-beanutils</artifactId>
-        	<version>1.7.0</version>
-        </dependency>
-        <dependency>
-        	<groupId>commons-validator</groupId>
-        	<artifactId>commons-validator</artifactId>
-        	<version>1.4.0</version>
-        </dependency>
-        <dependency>
-        	<groupId>com.googlecode.grep4j</groupId>
-        	<artifactId>grep4j</artifactId>
-        	<version>1.7.5</version>
-        </dependency>
-        <dependency>
-        	<groupId>net.lingala.zip4j</groupId>
-        	<artifactId>zip4j</artifactId>
-        	<version>1.3.1</version>
-        </dependency>
-        <dependency>
-        	<groupId>joda-time</groupId>
-        	<artifactId>joda-time</artifactId>
-        	<version>2.1</version>
-        </dependency>
-        <dependency>
-        	<groupId>com.google.code.gson</groupId>
-        	<artifactId>gson</artifactId>
-        	<version>2.2.2</version>
-        </dependency>
-        <dependency>
+        <!-- <dependency>
         	<groupId>org.reflections</groupId>
         	<artifactId>reflections</artifactId>
         	<version>0.9.9-RC1</version>
@@ -153,52 +153,57 @@
         			<groupId>dom4j</groupId>
         		</exclusion>
         	</exclusions>
+        </dependency>     -->
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.0.9</version>
         </dependency>
-		<dependency>
-			<groupId>ch.qos.logback</groupId>
-			<artifactId>logback-classic</artifactId>
-			<version>1.0.9</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-compress</artifactId>
-			<version>1.4.1</version>
-		</dependency>
-		<dependency>
-			<groupId>org.jvnet.mimepull</groupId>
-			<artifactId>mimepull</artifactId>
-			<version>1.9.1</version>
-		</dependency>
-		<dependency>
-		    <groupId>org.glassfish.jersey.media</groupId>
-		    <artifactId>jersey-media-multipart</artifactId>
-		    <version>${jersey-version}</version>
-		</dependency>
-		<dependency>
-		    <groupId>org.glassfish.jersey.containers</groupId>
-		    <artifactId>jersey-container-servlet</artifactId>
-		    <version>${jersey-version}</version>
-		</dependency>
-		<dependency>
-		    <groupId>org.glassfish.jersey.containers</groupId>
-		    <artifactId>jersey-container-grizzly2-servlet</artifactId>
-		    <version>${jersey-version}</version>
-		</dependency>
-	    <dependency>
-	        <groupId>org.slf4j</groupId>
-	        <artifactId>jul-to-slf4j</artifactId>
-	        <version>1.7.2</version>
-	    </dependency>
-	    <dependency>
-	        <groupId>org.skyscreamer</groupId>
-	        <artifactId>jsonassert</artifactId>
-	        <version>1.1.1</version>
-	        <scope>test</scope>
-	    </dependency>
-	</dependencies>
-	<build>
+        <!--		<dependency>
+              <groupId>org.apache.commons</groupId>
+              <artifactId>commons-compress</artifactId>
+              <version>1.4.1</version>
+          </dependency>
+          <dependency>
+              <groupId>org.jvnet.mimepull</groupId>
+              <artifactId>mimepull</artifactId>
+              <version>1.9.1</version>
+          </dependency>   -->
+        <dependency>
+            <groupId>org.glassfish.jersey.media</groupId>
+            <artifactId>jersey-media-multipart</artifactId>
+            <version>${jersey-version}</version>
+        </dependency>
+        <!-- <dependency>
+              <groupId>org.glassfish.jersey.containers</groupId>
+              <artifactId>jersey-container-servlet</artifactId>
+              <version>${jersey-version}</version>
+          </dependency>
+          <dependency>
+              <groupId>org.glassfish.jersey.containers</groupId>
+              <artifactId>jersey-container-grizzly2-servlet</artifactId>
+              <version>${jersey-version}</version>
+          </dependency>
+          <dependency>
+              <groupId>org.slf4j</groupId>
+              <artifactId>jul-to-slf4j</artifactId>
+              <version>1.7.2</version>
+          </dependency>
+          <dependency>
+              <groupId>org.skyscreamer</groupId>
+              <artifactId>jsonassert</artifactId>
+              <version>1.1.1</version>
+              <scope>test</scope>
+          </dependency>       -->
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-webapp</artifactId>
+            <version>9.1.0.M0</version>
+        </dependency>
+    </dependencies>
+    <build>
 
-		<plugins>
+        <plugins>
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
@@ -241,6 +246,7 @@
                             </rules>
                         </configuration>
                     </execution>
+                    <!--   No integration tests within this project (Kai)
                     <execution>
                         <id>pre-integration-test</id>
                         <phase>pre-integration-test</phase>
@@ -262,7 +268,9 @@
                             <dataFile>${project.build.directory}/jacoco.exec</dataFile>
                             <outputDirectory>${project.build.directory}/jacoco-report</outputDirectory>
                         </configuration>
+
                     </execution>
+                    -->
                 </executions>
             </plugin>
             <plugin>
@@ -271,15 +279,15 @@
                 <version>3.1</version>
                 <inherited>true</inherited>
                 <configuration>
-<!--                 http://www.gabiaxel.com/2011/10/replacing-javac-with-eclipse-compiler.html -->
+                    <!--                 http://www.gabiaxel.com/2011/10/replacing-javac-with-eclipse-compiler.html -->
                     <compilerId>eclipse</compilerId>
                     <source>1.7</source>
                     <target>1.7</target>
-        <!--                     <compilerVersion>1.7</compilerVersion> -->
-        <!--                     proc none to fix http://bugs.sun.com/view_bug.do?bug_id=6512707 -->
-        <!--                     <proc>none</proc> -->
-        <!--                     <verbose>true</verbose> -->
-        <!--                      <compilerArgument>-Xlint:unchecked</compilerArgument> -->
+                    <!--                     <compilerVersion>1.7</compilerVersion> -->
+                    <!--                     proc none to fix http://bugs.sun.com/view_bug.do?bug_id=6512707 -->
+                    <!--                     <proc>none</proc> -->
+                    <!--                     <verbose>true</verbose> -->
+                    <!--                      <compilerArgument>-Xlint:unchecked</compilerArgument> -->
                 </configuration>
                 <dependencies>
                     <dependency>
@@ -288,11 +296,11 @@
                         <version>2.2</version>
                     </dependency>
                 </dependencies>
-  			</plugin>
-    			<plugin>
-    				<groupId>org.codehaus.mojo</groupId>
-    				<artifactId>exec-maven-plugin</artifactId>
-				<version>1.2.1.jbossorg-SNAPSHOT</version>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>1.2.1.jbossorg-SNAPSHOT</version>
                 <executions>
                     <execution>
                         <id>default-cli</id>
@@ -303,7 +311,7 @@
                             <mainClass>${exec.mainClass.override}</mainClass>
                         </configuration>
                     </execution>
-                    <execution>
+                    <!-- <execution>
                         <id>setup</id>
                         <phase>pre-integration-test</phase>
                         <goals>
@@ -323,11 +331,11 @@
                         <configuration>
                             <mainClass>eu.dm2e.ws.TearDown</mainClass>
                         </configuration>
-                    </execution>
+                    </execution>  -->
                 </executions>
 
-			</plugin>
-            <plugin>
+            </plugin>
+            <!--<plugin>
                 <artifactId>maven-failsafe-plugin</artifactId>
                 <version>2.6</version>
                 <executions>
@@ -337,7 +345,7 @@
                             <goal>integration-test</goal>
                         </goals>
                         <configuration>
-                            <!-- <argLine>${failsafe.argLine}</argLine>            -->
+                            <! <argLine>${failsafe.argLine}</argLine>            >
                        <argLine></argLine>
                         </configuration>
                     </execution>
@@ -350,7 +358,7 @@
                     </execution>
                 </executions>
 
-            </plugin>
+            </plugin> -->
             <plugin>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.14.1</version>
@@ -364,31 +372,31 @@
                 </configuration>
             </plugin>
         </plugins>
-  	</build>
-  	<properties>
-  		<jersey-version>2.0-m12-1</jersey-version>
-		<sesame.version>2.6.10</sesame.version>
+    </build>
+    <properties>
+        <jersey-version>2.0-m12-1</jersey-version>
+        <sesame.version>2.6.10</sesame.version>
         <exec.mainClass.override>eu.dm2e.ws.Main</exec.mainClass.override>
         <old-jersey-version>1.17</old-jersey-version>
-  	</properties>
-	<repositories>
+    </properties>
+    <repositories>
         <repository>
-			<id>m2.java.net</id>
-			<name>Java.net Maven 2 Repository</name>
-			<url>http://download.java.net/maven/2</url>
-			<layout>default</layout>
-		</repository>
+            <id>m2.java.net</id>
+            <name>Java.net Maven 2 Repository</name>
+            <url>http://download.java.net/maven/2</url>
+            <layout>default</layout>
+        </repository>
         <repository>
-			<id>glassfish.java.net</id>
-			<name>GlassFish Maven Repository</name>
-			<url>http://download.java.net/maven/glassfish</url>
-			<layout>default</layout>
-		</repository>
-		<repository>
-			<name>Local Maven 2 Repository at University of Mannheim (DWS - Group)</name>
-			<id>lski</id>
-			<url>https://breda.informatik.uni-mannheim.de/nexus/content/groups/public/</url>
-		</repository>
+            <id>glassfish.java.net</id>
+            <name>GlassFish Maven Repository</name>
+            <url>http://download.java.net/maven/glassfish</url>
+            <layout>default</layout>
+        </repository>
+        <repository>
+            <name>Local Maven 2 Repository at University of Mannheim (DWS - Group)</name>
+            <id>lski</id>
+            <url>https://breda.informatik.uni-mannheim.de/nexus/content/groups/public/</url>
+        </repository>
         <repository>
             <name>LSKI Snapshot Repository</name>
             <id>lski-snapshots</id>

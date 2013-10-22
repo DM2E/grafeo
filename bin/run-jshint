@@ -1,9 +1,0 @@
-#!/bin/bash
-
-JSHINT="jshint"
-
-ln -s conf/jshintignore .jshintignore
-
-$JSHINT --verbose --config conf/jshint.config.json WebContent/js
-
-rm .jshintignore

@@ -1,2 +1,0 @@
-[] a <http://foo.bar> ;
-    <http://onto.dm2e.eu/onto#file_retrieval_uri> <http://foo.bar> .

@@ -1,3 +1,0 @@
-@prefix dm2e: <http://onto.dm2e.eu/omnom/> .
-
-[]  dm2e:fileStatus "AVAILABLE ;)" .
