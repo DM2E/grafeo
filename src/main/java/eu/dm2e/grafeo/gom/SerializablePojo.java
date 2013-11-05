@@ -148,6 +148,7 @@ public abstract class SerializablePojo<T> {
     public String getLabel() { return label; }
 	public void setLabel(String label) { this.label = label; }
 	public boolean hasLabel() { return this.label != null; }
+    public String getLabelorURI() { return hasLabel()?getLabel():getId(); }
 
     /**
      * Every Pojo can have a comment

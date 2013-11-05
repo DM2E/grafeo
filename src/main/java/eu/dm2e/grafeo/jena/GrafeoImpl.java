@@ -394,6 +394,7 @@ public class GrafeoImpl extends JenaImpl implements Grafeo {
 
     @Override
     public String expand(String uri) {
+        if (uri==null) return null;
         String expanded = model.expandPrefix(uri);
     	if (uri.indexOf(":") > 0) {
 	    	String ns = uri.substring(0, uri.indexOf(":"));
