@@ -31,8 +31,13 @@ public class GrafeoImpl extends JenaImpl implements Grafeo {
     public static final String BASE_URI = "eu.dm2e.grafeo.base_uri";
     private static final String LINE_SEPARATOR = System.getProperty("line.separator");
 
-    private static final long RETRY_INTERVAL = 500;
-    private static final int RETRY_COUNT = 3;
+    private static long RETRY_INTERVAL = 500;
+	public static long getRETRY_INTERVAL() { return RETRY_INTERVAL; }
+	public static void setRETRY_INTERVAL(long rETRY_INTERVAL) { RETRY_INTERVAL = rETRY_INTERVAL; }
+
+    private static int RETRY_COUNT = 3;
+	public static int getRETRY_COUNT() { return RETRY_COUNT; }
+	public static void setRETRY_COUNT(int rETRY_COUNT) { RETRY_COUNT = rETRY_COUNT; }
     
     private Logger log = LoggerFactory.getLogger(getClass().getName());
     protected Model model;
