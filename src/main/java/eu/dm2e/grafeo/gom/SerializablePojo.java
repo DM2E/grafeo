@@ -150,6 +150,16 @@ public abstract class SerializablePojo<T> {
 	public boolean hasLabel() { return this.label != null; }
 
     /**
+     * Every Pojo can have a comment
+     */
+    @RDFProperty(NS.RDFS.PROP_COMMENT)
+    private String comment;
+    public String getComment() { return comment; }
+    public void setComment(String comment) { this.comment= comment; }
+    public boolean hasComment() { return this.comment != null; }
+
+
+    /**
      * Every Pojo has a unique UUID, whether it has an ID or is a blank node
      */
 //    @RDFProperty(NS.RDFS.PROP_LABEL)

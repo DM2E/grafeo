@@ -37,7 +37,7 @@ public class GrafeoImpl extends JenaImpl implements Grafeo {
     private Logger log = LoggerFactory.getLogger(getClass().getName());
     protected Model model;
     private Map<String, String> namespaces = new HashMap<>();
-    private Map<String, String> namespacesUsed = new HashMap<>();;
+    private Map<String, String> namespacesUsed = new HashMap<>();
     protected ObjectMapper objectMapper;
 
     public static String SPARQL_CONSTRUCT_EVERYTHING = "CONSTRUCT { ?s ?p ?o } WHERE { { GRAPH ?g { ?s ?p ?o } } UNION { ?s ?p ?o } }";
