@@ -1,11 +1,20 @@
 package eu.dm2e.grafeo.json;
 
-import com.google.gson.*;
-import eu.dm2e.grafeo.gom.SerializablePojo;
-import org.joda.time.DateTime;
-
 import java.lang.reflect.Type;
 import java.util.List;
+
+import org.joda.time.DateTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+
+import eu.dm2e.grafeo.gom.SerializablePojo;
+import eu.dm2e.grafeo.util.LogbackMarkers;
 
 /**
  * Convenience class wrapping JSON serialization/deserialization functionality for easy reuse.
@@ -35,7 +44,9 @@ public class GrafeoJsonSerializer {
 //	}
 	
 	private static Gson gson;
+	public static Gson getGson() { return gson; }
     private static final GsonBuilder gsonBuilder;
+    private static Logger log = LoggerFactory.getLogger(GrafeoJsonSerializer.class.getName());
 	
 	static {
 		
@@ -80,6 +91,7 @@ public class GrafeoJsonSerializer {
 	}
 	
 	public static <T> JsonObject serializeToJsonObject(SerializablePojo<T> pojo, Type T) {
+		 log.debug(LogbackMarkers.DATA_DUMP, "Serializing {} to JSON", pojo.getTerseTurtle());
 		 JsonElement jsonElem = gson.toJsonTree(pojo, T);
 		 if (! jsonElem.isJsonObject()) {
 			 throw new RuntimeException(pojo + " was serialized to something other than a JSON object: " + jsonElem.getClass());
@@ -95,6 +107,7 @@ public class GrafeoJsonSerializer {
 	
 	public static <T> String serializeToJSON(SerializablePojo<T> pojo, Type T) {
 		JsonObject json = serializeToJsonObject(pojo, T);
+		log.debug("Serialized as " + json);
 		return gson.toJson(json);
 	}
 	public static <T> T deserializeFromJSON(String jsonStr, Class<T> T) {
