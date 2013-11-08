@@ -846,6 +846,8 @@ public class GrafeoImpl extends JenaImpl implements Grafeo {
 
     public GValueImpl firstMatchingObject(String s, String p) {
     	
+    	if (s == null) { s = "?s_grafeo"; }
+    	if (p == null) { p = "?p_grafeo"; }
         s = s.startsWith("?") ? s : "<" + expand(s) + ">";
         p = p.startsWith("?") ? p : "<" + expand(p) + ">";
         ResultSet iter = new SparqlSelect.Builder()
