@@ -1,10 +1,5 @@
 package eu.dm2e.grafeo;
 
-import eu.dm2e.grafeo.gom.ObjectMapper;
-import eu.dm2e.grafeo.jena.GResourceImpl;
-
-import javax.ws.rs.client.Entity;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -12,6 +7,13 @@ import java.net.URI;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import javax.ws.rs.client.Entity;
+
+import com.github.jsonldjava.core.Options;
+
+import eu.dm2e.grafeo.gom.ObjectMapper;
+import eu.dm2e.grafeo.jena.GResourceImpl;
 
 /**
  * The Grafeo API is a simple RDF API. The goal is the minimization of
@@ -251,6 +253,20 @@ public interface Grafeo {
 	String getNTriples();
 
 	/**
+	 * Returns a JSON-LD serialization.
+	 * 
+	 * @return JSON-LD
+	 */
+	String getJsonLd();
+
+	/**
+	 * Returns a JSON-LD serialization, using the options specified.
+	 * 
+	 * @return JSON-LD
+	 */
+	String getJsonLd(Options opts);
+
+	/**
 	 * Returns an NTRIPLES serialization, sorted to make comparison easier
 	 * 
 	 * @return Sorted NTRIPLES
@@ -316,6 +332,8 @@ public interface Grafeo {
 	 * @return Set of all subjects with type type
 	 */
     Set<GResource> findByClass(String type);
+
+    GResource blank();
 
     GResource createBlank();
 
@@ -505,6 +523,7 @@ public interface Grafeo {
 	Entity<String> getTurtleEntity();
 
 	boolean containsTriple(URI s, String p, String o);
+
 
 
 }

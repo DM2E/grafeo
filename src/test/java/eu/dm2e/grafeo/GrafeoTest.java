@@ -1,9 +1,10 @@
 package eu.dm2e.grafeo;
 
-import eu.dm2e.grafeo.jena.GrafeoImpl;
+import static org.junit.Assert.*;
+
 import org.junit.Test;
 
-import static org.junit.Assert.assertTrue;
+import eu.dm2e.grafeo.jena.GrafeoImpl;
 
 /**
  * This file was created within the DM2E project.
@@ -67,6 +68,19 @@ public class GrafeoTest {
 		GrafeoImpl g = new GrafeoImpl();
 		g.addTriple(res1, "rdf:type", res2);
 		assertTrue(g.get(res1).isa(res2));
+	}
+	
+	@Test
+	public void testJsonLd() {
+		GrafeoImpl g = new GrafeoImpl();
+		GResource bn = g.blank();
+		g.addTriple(res1, "rdf:type", res2);
+		g.addTriple(res1, "dc:foo", res2);
+		g.addTriple(res1, "dc:bar", g.literal(23));
+		g.addTriple(res1, "dc:quux", bn);
+		g.addTriple(bn, "dc:fnork", "foaf:Blott");
+		System.out.println(g.getTerseTurtle());
+		System.out.println(g.getJsonLd());
 	}
 
 }

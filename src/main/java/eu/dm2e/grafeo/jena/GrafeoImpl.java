@@ -1,16 +1,33 @@
 package eu.dm2e.grafeo.jena;
 
-import com.hp.hpl.jena.query.ResultSet;
-import com.hp.hpl.jena.rdf.model.*;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStreamWriter;
+import java.io.StringWriter;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+import java.util.UUID;
 
-import eu.dm2e.grafeo.*;
-import eu.dm2e.grafeo.annotations.Namespaces;
-import eu.dm2e.grafeo.annotations.RDFId;
-import eu.dm2e.grafeo.gom.ObjectMapper;
-import eu.dm2e.grafeo.util.Config;
-import eu.dm2e.grafeo.util.DM2E_MediaType;
-import eu.dm2e.grafeo.util.LogbackMarkers;
-import eu.dm2e.grafeo.util.NS;
+import javax.ws.rs.client.Entity;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.io.IOUtils;
@@ -18,15 +35,39 @@ import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.ws.rs.client.Entity;
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.github.jsonldjava.core.JSONLD;
+import com.github.jsonldjava.core.JSONLDProcessingError;
+import com.github.jsonldjava.core.Options;
+import com.github.jsonldjava.impl.JenaRDFParser;
+import com.github.jsonldjava.utils.JSONUtils;
+import com.hp.hpl.jena.query.ResultSet;
+import com.hp.hpl.jena.rdf.model.AnonId;
+import com.hp.hpl.jena.rdf.model.Literal;
+import com.hp.hpl.jena.rdf.model.Model;
+import com.hp.hpl.jena.rdf.model.ModelFactory;
+import com.hp.hpl.jena.rdf.model.NodeIterator;
+import com.hp.hpl.jena.rdf.model.Property;
+import com.hp.hpl.jena.rdf.model.RDFNode;
+import com.hp.hpl.jena.rdf.model.ResIterator;
+import com.hp.hpl.jena.rdf.model.Resource;
+import com.hp.hpl.jena.rdf.model.Statement;
+import com.hp.hpl.jena.rdf.model.StmtIterator;
 
-import java.io.*;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.*;
-import java.util.Map.Entry;
+import eu.dm2e.grafeo.GLiteral;
+import eu.dm2e.grafeo.GResource;
+import eu.dm2e.grafeo.GStatement;
+import eu.dm2e.grafeo.GValue;
+import eu.dm2e.grafeo.Grafeo;
+import eu.dm2e.grafeo.SkolemizationMethod;
+import eu.dm2e.grafeo.annotations.Namespaces;
+import eu.dm2e.grafeo.annotations.RDFId;
+import eu.dm2e.grafeo.gom.ObjectMapper;
+import eu.dm2e.grafeo.util.Config;
+import eu.dm2e.grafeo.util.DM2E_MediaType;
+import eu.dm2e.grafeo.util.LogbackMarkers;
+import eu.dm2e.grafeo.util.NS;
 
 public class GrafeoImpl extends JenaImpl implements Grafeo {
 
@@ -1393,5 +1434,40 @@ public class GrafeoImpl extends JenaImpl implements Grafeo {
 			grafeoResSet.add(this.resource(jenaRes));
 		}
 		return grafeoResSet;
+	}
+	@Override
+	public String getJsonLd(Options opts) {
+        StringWriter sw = new StringWriter();
+        final Map<String, Object> ctx = new LinkedHashMap<String, Object>();
+        ctx.putAll(getNamespaces());
+        Object modelAsJsonLd;
+        try {
+			 modelAsJsonLd = JSONLD.fromRDF(model, new JenaRDFParser());
+			 modelAsJsonLd = JSONLD.simplify(modelAsJsonLd, opts);
+			 modelAsJsonLd = JSONLD.compact(modelAsJsonLd, ctx);
+			 JSONUtils.writePrettyPrint(sw, modelAsJsonLd);
+		} catch (JSONLDProcessingError e) {
+			throw new RuntimeException(e);
+		} catch (JsonGenerationException e) {
+			throw new RuntimeException(e);
+		} catch (JsonMappingException e) {
+			throw new RuntimeException(e);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+        return sw.toString();
+		
+	}
+	@Override
+	public String getJsonLd() {
+        Options opts = new Options();
+        opts.useRdfType = false;
+        opts.useNamespaces = true;
+        opts.graph = false;
+        return getJsonLd(opts);
+	}
+	@Override
+	public GResource blank() {
+		return createBlank();
 	}
 }
