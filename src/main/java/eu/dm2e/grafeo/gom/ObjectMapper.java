@@ -1,5 +1,20 @@
 package eu.dm2e.grafeo.gom;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.net.URI;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import org.apache.commons.beanutils.PropertyUtils;
+import org.apache.commons.lang.exception.ExceptionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import eu.dm2e.grafeo.GResource;
 import eu.dm2e.grafeo.GValue;
 import eu.dm2e.grafeo.Grafeo;
@@ -9,15 +24,6 @@ import eu.dm2e.grafeo.annotations.RDFId;
 import eu.dm2e.grafeo.annotations.RDFProperty;
 import eu.dm2e.grafeo.util.NS;
 import eu.dm2e.grafeo.util.PojoUtils;
-import org.apache.commons.beanutils.PropertyUtils;
-import org.apache.commons.lang.exception.ExceptionUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.net.URI;
-import java.util.*;
 
 /**
  * The object mapper contains all functionality for the serialization and deserialization

@@ -1,15 +1,17 @@
 package eu.dm2e.grafeo.jena;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.hp.hpl.jena.query.Query;
 import com.hp.hpl.jena.query.QueryExecution;
 import com.hp.hpl.jena.query.QueryExecutionFactory;
 import com.hp.hpl.jena.query.QueryFactory;
-import eu.dm2e.grafeo.util.LogbackMarkers;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.util.HashMap;
-import java.util.Map;
+import eu.dm2e.grafeo.util.LogbackMarkers;
 
 public class SparqlConstruct {
 	

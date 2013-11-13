@@ -1,20 +1,22 @@
 package eu.dm2e.grafeo.jena;
 
+import java.net.URI;
+import java.util.HashSet;
+import java.util.Set;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.Statement;
 import com.hp.hpl.jena.rdf.model.StmtIterator;
 import com.hp.hpl.jena.util.ResourceUtils;
+
 import eu.dm2e.grafeo.GResource;
 import eu.dm2e.grafeo.GStatement;
 import eu.dm2e.grafeo.GValue;
 import eu.dm2e.grafeo.Grafeo;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.net.URI;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * This file was created within the DM2E project.

@@ -1,9 +1,10 @@
 package eu.dm2e.grafeo.jena;
 
-import eu.dm2e.grafeo.GrafeoBaseUnitTest;
+import static org.junit.Assert.*;
+
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import eu.dm2e.grafeo.GrafeoBaseUnitTest;
 
 public class SparqlUpdateTest extends GrafeoBaseUnitTest {
 

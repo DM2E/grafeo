@@ -1,15 +1,22 @@
 package eu.dm2e.grafeo.jena;
 
-import com.hp.hpl.jena.update.*;
-import eu.dm2e.grafeo.GResource;
-import eu.dm2e.grafeo.Grafeo;
-import eu.dm2e.grafeo.util.LogbackMarkers;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.hp.hpl.jena.update.GraphStore;
+import com.hp.hpl.jena.update.GraphStoreFactory;
+import com.hp.hpl.jena.update.UpdateExecutionFactory;
+import com.hp.hpl.jena.update.UpdateFactory;
+import com.hp.hpl.jena.update.UpdateProcessor;
+import com.hp.hpl.jena.update.UpdateRequest;
+
+import eu.dm2e.grafeo.GResource;
+import eu.dm2e.grafeo.Grafeo;
+import eu.dm2e.grafeo.util.LogbackMarkers;
 
 public class SparqlUpdate {
 	

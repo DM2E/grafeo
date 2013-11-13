@@ -1,8 +1,8 @@
 package eu.dm2e.grafeo.jena;
 
-import org.junit.Test;
+import static org.junit.Assert.*;
 
-import static org.junit.Assert.assertTrue;
+import org.junit.Test;
 
 public class SparqlConstructTest {
 

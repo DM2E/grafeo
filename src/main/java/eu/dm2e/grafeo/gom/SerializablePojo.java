@@ -1,6 +1,17 @@
 package eu.dm2e.grafeo.gom;
 
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.UUID;
+
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.MediaType;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.google.gson.JsonObject;
+
 import eu.dm2e.grafeo.Grafeo;
 import eu.dm2e.grafeo.annotations.RDFClass;
 import eu.dm2e.grafeo.annotations.RDFId;
@@ -9,14 +20,6 @@ import eu.dm2e.grafeo.jena.GrafeoImpl;
 import eu.dm2e.grafeo.json.GrafeoJsonSerializer;
 import eu.dm2e.grafeo.util.DM2E_MediaType;
 import eu.dm2e.grafeo.util.NS;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.core.MediaType;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.UUID;
 
 /**
  * Abstract Base class for Pojos with serialization/deserialization abilities from RDF/JSON.

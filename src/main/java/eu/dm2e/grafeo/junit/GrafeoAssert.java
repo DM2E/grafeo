@@ -1,16 +1,17 @@
 package eu.dm2e.grafeo.junit;
 
+import static org.junit.Assert.*;
+
+import java.util.List;
+import java.util.Set;
+
+import org.junit.ComparisonFailure;
+
 import eu.dm2e.grafeo.GLiteral;
 import eu.dm2e.grafeo.GStatement;
 import eu.dm2e.grafeo.Grafeo;
 import eu.dm2e.grafeo.gom.SerializablePojo;
 import eu.dm2e.grafeo.jena.GrafeoImpl;
-import org.junit.ComparisonFailure;
-
-import java.util.List;
-import java.util.Set;
-
-import static org.junit.Assert.fail;
 
 /**
  * Helper functions for asserting facts about Grafeos.

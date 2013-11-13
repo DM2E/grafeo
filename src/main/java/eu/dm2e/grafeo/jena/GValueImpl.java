@@ -1,19 +1,22 @@
 package eu.dm2e.grafeo.jena;
 
-import com.hp.hpl.jena.rdf.model.RDFNode;
-import eu.dm2e.grafeo.GLiteral;
-import eu.dm2e.grafeo.GResource;
-import eu.dm2e.grafeo.GValue;
-import eu.dm2e.grafeo.Grafeo;
-import org.joda.time.DateTime;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.xml.bind.DatatypeConverter;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Calendar;
 import java.util.Set;
+
+import javax.xml.bind.DatatypeConverter;
+
+import org.joda.time.DateTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.hp.hpl.jena.rdf.model.RDFNode;
+
+import eu.dm2e.grafeo.GLiteral;
+import eu.dm2e.grafeo.GResource;
+import eu.dm2e.grafeo.GValue;
+import eu.dm2e.grafeo.Grafeo;
 
 /**
  * This file was created within the DM2E project.

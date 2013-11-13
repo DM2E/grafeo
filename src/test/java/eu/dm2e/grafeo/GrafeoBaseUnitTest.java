@@ -1,15 +1,17 @@
 package eu.dm2e.grafeo;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import eu.dm2e.grafeo.jena.GrafeoImpl;
-import eu.dm2e.grafeo.json.GrafeoJsonSerializer;
-import eu.dm2e.grafeo.json.JodaDateTimeSerializer;
+import java.util.UUID;
+
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.UUID;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import eu.dm2e.grafeo.jena.GrafeoImpl;
+import eu.dm2e.grafeo.json.GrafeoJsonSerializer;
+import eu.dm2e.grafeo.json.JodaDateTimeSerializer;
 public class GrafeoBaseUnitTest {
 	
 	protected Logger log = LoggerFactory.getLogger(getClass().getName());

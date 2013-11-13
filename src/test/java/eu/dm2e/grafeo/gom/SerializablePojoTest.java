@@ -1,15 +1,15 @@
 package eu.dm2e.grafeo.gom;
 
 
+import static org.junit.Assert.*;
+
+import org.junit.Test;
+
 import eu.dm2e.grafeo.Grafeo;
 import eu.dm2e.grafeo.GrafeoBaseUnitTest;
 import eu.dm2e.grafeo.annotations.RDFClass;
 import eu.dm2e.grafeo.annotations.RDFProperty;
 import eu.dm2e.grafeo.jena.GrafeoImpl;
-import org.junit.Test;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 
 public class SerializablePojoTest extends GrafeoBaseUnitTest {
 	

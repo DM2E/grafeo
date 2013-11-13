@@ -1,10 +1,11 @@
 package eu.dm2e.grafeo.jena;
 
-import com.hp.hpl.jena.query.QuerySolution;
-import com.hp.hpl.jena.query.ResultSet;
+import static org.junit.Assert.*;
+
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import com.hp.hpl.jena.query.QuerySolution;
+import com.hp.hpl.jena.query.ResultSet;
 
 public class SparqlSelectTest {
 

@@ -1,8 +1,8 @@
 package eu.dm2e.grafeo.util;
 
-import org.apache.commons.beanutils.BeanUtilsBean;
-
 import java.lang.reflect.InvocationTargetException;
+
+import org.apache.commons.beanutils.BeanUtilsBean;
 
 /**
  * Drop-In for BeanUtils to copy only those properties that are not null.
