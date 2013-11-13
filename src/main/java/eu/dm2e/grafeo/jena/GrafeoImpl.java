@@ -2,6 +2,7 @@ package eu.dm2e.grafeo.jena;
 
 import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.rdf.model.*;
+
 import eu.dm2e.grafeo.*;
 import eu.dm2e.grafeo.annotations.Namespaces;
 import eu.dm2e.grafeo.annotations.RDFId;
@@ -10,6 +11,7 @@ import eu.dm2e.grafeo.util.Config;
 import eu.dm2e.grafeo.util.DM2E_MediaType;
 import eu.dm2e.grafeo.util.LogbackMarkers;
 import eu.dm2e.grafeo.util.NS;
+
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
@@ -17,6 +19,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.client.Entity;
+
 import java.io.*;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -44,6 +47,10 @@ public class GrafeoImpl extends JenaImpl implements Grafeo {
     private Map<String, String> namespaces = new HashMap<>();
     private Map<String, String> namespacesUsed = new HashMap<>();
     protected ObjectMapper objectMapper;
+
+	private static Map<String, String>	staticNamespaces = new HashMap<>();
+	public static void addStaticNamespace(String prefix, String base) { staticNamespaces.put(prefix, base); }
+	public static void removeStaticNamespace(String prefix) { staticNamespaces.remove(prefix); }
 
     public static String SPARQL_CONSTRUCT_EVERYTHING = "CONSTRUCT { ?s ?p ?o } WHERE { { GRAPH ?g { ?s ?p ?o } } UNION { ?s ?p ?o } }";
 
@@ -425,9 +432,15 @@ public class GrafeoImpl extends JenaImpl implements Grafeo {
 	}
 
     @Override
-    public GStatementImpl addTriple(String subject, String predicate,
+    public GStatement addTriple(String subject, String predicate,
                                     String object) {
         GResourceImpl s = new GResourceImpl(this, subject);
+        return this.addTriple(s, predicate, object);
+    }
+    
+	@Override
+	public GStatement addTriple(GResource subject, String predicate, String object) {
+		GResource s = subject;
         GResourceImpl p = new GResourceImpl(this, predicate);
 
         GStatementImpl statement;
@@ -442,7 +455,7 @@ public class GrafeoImpl extends JenaImpl implements Grafeo {
         }
         model.add(statement.getStatement());
         return statement;
-    }
+	}
 
     @Override
     public GStatementImpl addTriple(String subject, String predicate,
@@ -605,6 +618,15 @@ public class GrafeoImpl extends JenaImpl implements Grafeo {
     public void readFromEndpoint(String endpoint, URI graphURI) {
         readFromEndpoint(endpoint, graphURI.toString());
     }
+	@Override
+	public void readFromEndpoint(URI endpoint, String graph) {
+		readFromEndpoint(endpoint.toString(), graph);
+	}
+	@Override
+	public void readFromEndpoint(URI endpoint, URI graph) {
+		readFromEndpoint(endpoint.toString(), graph.toString());
+		
+	}
     public void readTriplesFromEndpoint(String endpointUpdate, String subject, GResource predicate, GValue object) {
     	readTriplesFromEndpoint(endpointUpdate, subject, predicate.getUri(), object);
     }
@@ -644,6 +666,11 @@ public class GrafeoImpl extends JenaImpl implements Grafeo {
     	putToEndpoint(endpoint, graph.toString());
     }
 
+	@Override
+	public void putToEndpoint(URI endpointUpdate, String graph) {
+		putToEndpoint(endpointUpdate.toString(), graph);
+	}
+
     @Override
     public void postToEndpoint(String endpoint, String graph) {
         log.info("Post to endpoint: " + endpoint + " / Graph: " + graph);
@@ -661,6 +688,11 @@ public class GrafeoImpl extends JenaImpl implements Grafeo {
     public void postToEndpoint(String endpoint, URI graphURI) {
         postToEndpoint(endpoint, graphURI.toString());
     }
+
+	@Override
+	public void postToEndpoint(URI endpointUpdate, String graph) {
+		postToEndpoint(endpointUpdate, graph);
+	}
 
     @Override
     public GLiteral now() {
@@ -892,6 +924,7 @@ public class GrafeoImpl extends JenaImpl implements Grafeo {
 
     protected void initDefaultNamespaces() {
         // TODO: Put this in a config file (kai)
+    	namespaces.putAll(staticNamespaces);
         namespaces.put("foaf", "http://xmlns.com/foaf/0.1/");
         namespaces.put("dct", "http://purl.org/dc/terms/");
         namespaces.put("co", "http://purl.org/co/");

@@ -4,6 +4,7 @@ import eu.dm2e.grafeo.gom.ObjectMapper;
 import eu.dm2e.grafeo.jena.GResourceImpl;
 
 import javax.ws.rs.client.Entity;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -111,11 +112,21 @@ public interface Grafeo {
 	 * Add a triple to the graph. 
 	 * 
 	 * @param subject URI/Shorthand of the subject
-	 * @param predicate URI/Shorthand of the object
+	 * @param predicate URI/Shorthand of the predicate
 	 * @param object URI/Shorthand of the object
 	 * @return
 	 */
 	GStatement addTriple(String subject, String predicate, String object);
+
+	/**
+	 * Add a triple to the graph. 
+	 * 
+	 * @param subject GResource 
+	 * @param predicate URI/Shorthand of the predicate
+	 * @param object URI/Shorthand of the object
+	 * @return
+	 */
+	GStatement addTriple(GResource subject, String predicate, String object);
 
 	/**
 	 * Add a triple to the graph. 
@@ -155,6 +166,24 @@ public interface Grafeo {
 	 * @see #load(String)
 	 */
 	void readFromEndpoint(String endpoint, String graph);
+
+	/**
+	 * Loads all triples of a graph from an endpoint using the SPARQL protocol, without expansion.
+	 * 
+	 * @param endpoint URI of the endpoint
+	 * @param graph URI of the graph
+	 * @see #load(String)
+	 */
+	void readFromEndpoint(URI endpoint, String graph);
+
+	/**
+	 * Loads all triples of a graph from an endpoint using the SPARQL protocol, without expansion.
+	 * 
+	 * @param endpoint URI of the endpoint
+	 * @param graph URI of the graph
+	 * @see #load(String)
+	 */
+	void readFromEndpoint(URI endpoint, URI graph);
 	
 	/**
 	 * Loads all triples of a graph from an endpoint using the SPARQL protocol, expanding resources.
@@ -186,6 +215,11 @@ public interface Grafeo {
 	 * @see Grafeo#postToEndpoint(String, String)
 	 */
 	void postToEndpoint(String endpoint, URI graphURI);
+
+	/**
+	 * @see Grafeo#postToEndpoint(String, String)
+	 */
+	void postToEndpoint(URI endpointUpdate, String urn_meta);
 	
 	/**
 	 * Empties the specified graph on the endpoint and writes the grafeo to it.
@@ -194,6 +228,15 @@ public interface Grafeo {
 	 * @param graph
 	 */
 	void putToEndpoint(String endpoint, String graph);
+
+	/**
+	 * Empties the specified graph on the endpoint and writes the grafeo to it.
+	 * 
+	 * @param endpoint
+	 * @param graph
+	 */
+	void putToEndpoint(URI endpointUpdate, String urn);
+
 
 	/**
 	 * @see Grafeo#putToEndpoint(String, String)
