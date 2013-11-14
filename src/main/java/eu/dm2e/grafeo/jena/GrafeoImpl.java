@@ -275,10 +275,15 @@ public class GrafeoImpl extends JenaImpl implements Grafeo {
 
     @Override
     public void load(String uri, int expansionSteps) {
-        if ( Config.getConfig().getBoolean(NO_EXTERNAL_URL_FLAG, false) && ! uri.startsWith(Config.get(BASE_URI))) {
-            log.warn("Skipping loading of <{}> because {} config option is set.", uri, NO_EXTERNAL_URL_FLAG);
+        if ( Config.getConfig().getBoolean(NO_EXTERNAL_URL_FLAG, false)
+        		&& ! uri.startsWith(Config.get(BASE_URI))) {
+        	log.debug(NO_EXTERNAL_URL_FLAG + ": " + Config.getConfig().getBoolean(NO_EXTERNAL_URL_FLAG));
+        	log.debug(BASE_URI + ": " + Config.getConfig().getBoolean(BASE_URI));
+        	log.warn("Skipping loading of " + uri 
+        			+ " because " + NO_EXTERNAL_URL_FLAG + " config option is set to true and "
+        			+ uri + " startsWith " + Config.get(BASE_URI) + " ."
+        			);
             return;
-
         }
         log.debug("Load data from URI: " + uri);
         uri = expand(uri);
