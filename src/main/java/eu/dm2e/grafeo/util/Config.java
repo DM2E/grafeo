@@ -17,7 +17,7 @@ public enum Config {
     INSTANCE
     ;
 
-    private static final String CONFIG_FILE = "/config.xml";
+    private static final String CONFIG_FILE = "/grafeo.config.xml";
     private final Configuration config;
 //	private Logger log = LoggerFactory.getLogger(Config.class.getName());
 
