@@ -11,7 +11,11 @@ import com.hp.hpl.jena.query.Query;
 import com.hp.hpl.jena.query.QueryExecution;
 import com.hp.hpl.jena.query.QueryExecutionFactory;
 import com.hp.hpl.jena.query.QueryFactory;
+import com.hp.hpl.jena.query.QuerySolutionMap;
 import com.hp.hpl.jena.query.ResultSet;
+import com.hp.hpl.jena.rdf.model.RDFNode;
+
+import eu.dm2e.grafeo.GValue;
 
 public class SparqlSelect {
 	
@@ -21,12 +25,14 @@ public class SparqlSelect {
 	private long limit = 0;
 	private GrafeoImpl grafeo;
     private Map<String,String> prefixes = new HashMap<>();
+	private QuerySolutionMap initialBindings = new QuerySolutionMap();
 
 	public static class Builder {
 		private String graph, endpoint, selectClause, orderBy, whereClause;
 		private long limit;
         private GrafeoImpl grafeo;
         private Map<String,String> prefixes = new HashMap<>();
+        private QuerySolutionMap initialBindings = new QuerySolutionMap();
 		
 		public Builder graph(String s)  	{ this.graph = s; return this; }
 		public Builder graph(URI s)  	{ this.graph = s.toString(); return this; }
@@ -43,6 +49,11 @@ public class SparqlSelect {
         
         public Builder prefixes(Map<String,String> prefixes)	{ this.prefixes.putAll(prefixes); return this; }
         public Builder prefix(String prefix, String value) 		{ this.prefixes.put(prefix, value); return this; }
+        
+        public Builder initBinding(String varName, GValueImpl val) { 
+        	this.initialBindings.add(varName, val.getJenaRDFNode());
+        	return this;
+        }
 
         public SparqlSelect build() { return new SparqlSelect(this); }
 	}
@@ -57,6 +68,7 @@ public class SparqlSelect {
 		this.whereClause = builder.whereClause;
 		this.selectClause = builder.selectClause == null ? "*" : builder.selectClause;
         this.prefixes = builder.prefixes;
+        this.initialBindings = builder.initialBindings;
         
 		if (null != builder.endpoint && null != builder.grafeo)
 			throw new IllegalArgumentException("Must set endpoint or grafeo, not both.");
@@ -110,6 +122,9 @@ public class SparqlSelect {
         	exec = QueryExecutionFactory.createServiceRequest(endpoint, query);
         } else {
         	exec = QueryExecutionFactory.create(query, grafeo.getModel());
+        }
+        if (this.initialBindings.varNames().hasNext()) {
+        	exec.setInitialBinding(initialBindings);
         }
         return exec.execSelect();
 	}
