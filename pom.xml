@@ -1,5 +1,5 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>eu.dm2e.grafeo</groupId>
     <artifactId>grafeo</artifactId>
@@ -38,27 +38,25 @@
         </pluginRepository>
     </pluginRepositories>
     <dependencies>
-        <!-- uncomment this to get JSON support: <dependency> <groupId>com.sun.jersey</groupId>
-              <artifactId>jersey-json</artifactId> <version>${jersey-version}</version>
-              </dependency> -->
-        <!-- uncomment this to get Fastinfoset support: <dependency> <groupId>com.sun.jersey</groupId>
-              <artifactId>jersey-fastinfoset</artifactId> <version>${jersey-version}</version>
-              </dependency> -->
-        <!-- uncomment this to get ATOM support: <dependency> <groupId>com.sun.jersey</groupId>
-              <artifactId>jersey-atom</artifactId> <version>${jersey-version}</version>
-              </dependency> -->
-        <!-- uncomment this to get multipart MIME types support: <dependency> <groupId>com.sun.jersey.contribs</groupId>
-              <artifactId>jersey-multipart</artifactId> <version>${jersey-version}</version>
-              </dependency> -->
-        <!--<dependency>
-              <groupId>org.apache.jena</groupId>
-              <artifactId>jena-tdb</artifactId>
-              <version>0.10.0</version>
-          </dependency>                  -->
+        <!-- This should pull in slf4j -->
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>1.0.9</version>
+		</dependency>
+        <!-- Jersey client for loading/posting/putting pojos -->
         <dependency>
+            <groupId>org.glassfish.jersey.core</groupId>
+            <artifactId>jersey-client</artifactId>
+            <version>2.0</version>
+        </dependency>
+        <dependency>
+            <!-- This should pull in the other Jena deps -->
             <groupId>org.apache.jena</groupId>
-            <artifactId>jena-fuseki</artifactId>
-            <version>0.2.7</version>
+            <artifactId>jena-arq</artifactId>
+            <version>2.10.1</version>
+
+            <!-- Exclude all recursive logging deps -->
             <exclusions>
                 <exclusion>
                     <artifactId>slf4j-log4j12</artifactId>
@@ -68,23 +66,12 @@
                     <artifactId>log4j</artifactId>
                     <groupId>log4j</groupId>
                 </exclusion>
+                <exclusion>
+                    <artifactId>slf4j-api</artifactId>
+                    <groupId>org.slf4j</groupId>
+                </exclusion>
             </exclusions>
         </dependency>
-        <!--       <dependency>
-          <groupId>org.apache.jena</groupId>
-          <artifactId>jena-arq</artifactId>
-          <version>2.10.1</version>
-          <exclusions>
-              <exclusion>
-                  <artifactId>slf4j-log4j12</artifactId>
-                  <groupId>org.slf4j</groupId>
-              </exclusion>
-              <exclusion>
-                  <artifactId>log4j</artifactId>
-                  <groupId>log4j</groupId>
-              </exclusion>
-          </exclusions>
-      </dependency>  -->
 
         <dependency>
             <groupId>junit</groupId>
@@ -92,12 +79,6 @@
             <version>4.8.2</version>
             <!--  <scope>test</scope>  -->
         </dependency>
-        <!--    <dependency>
-          <groupId>net.sf.saxon</groupId>
-          <artifactId>Saxon-B</artifactId>
-          <version>9.0</version>
-
-      </dependency>  -->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-io</artifactId>
@@ -108,31 +89,11 @@
             <artifactId>commons-configuration</artifactId>
             <version>1.9</version>
         </dependency>
-        <!-- <dependency>
-       <groupId>commons-lang</groupId>
-       <artifactId>commons-lang</artifactId>
-       <version>2.6</version>
-   </dependency>     -->
         <dependency>
             <groupId>commons-beanutils</groupId>
             <artifactId>commons-beanutils</artifactId>
             <version>1.7.0</version>
         </dependency>
-        <!--  <dependency>
-<groupId>commons-validator</groupId>
-<artifactId>commons-validator</artifactId>
-<version>1.4.0</version>
-</dependency>
-<dependency>
-<groupId>com.googlecode.grep4j</groupId>
-<artifactId>grep4j</artifactId>
-<version>1.7.5</version>
-</dependency>
-<dependency>
-<groupId>net.lingala.zip4j</groupId>
-<artifactId>zip4j</artifactId>
-<version>1.3.1</version>
-</dependency>            -->
         <dependency>
             <groupId>joda-time</groupId>
             <artifactId>joda-time</artifactId>
@@ -143,67 +104,33 @@
             <artifactId>gson</artifactId>
             <version>2.2.2</version>
         </dependency>
-        <!-- <dependency>
-        	<groupId>org.reflections</groupId>
-        	<artifactId>reflections</artifactId>
-        	<version>0.9.9-RC1</version>
-        	<exclusions>
-        		<exclusion>
-        			<artifactId>dom4j</artifactId>
-        			<groupId>dom4j</groupId>
-        		</exclusion>
-        	</exclusions>
-        </dependency>     -->
-        <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-classic</artifactId>
-            <version>1.0.9</version>
-        </dependency>
-        <!--		<dependency>
-              <groupId>org.apache.commons</groupId>
-              <artifactId>commons-compress</artifactId>
-              <version>1.4.1</version>
-          </dependency>
+        <!--
           <dependency>
               <groupId>org.jvnet.mimepull</groupId>
               <artifactId>mimepull</artifactId>
               <version>1.9.1</version>
-          </dependency>   -->
-        <dependency>
-            <groupId>org.glassfish.jersey.media</groupId>
-            <artifactId>jersey-media-multipart</artifactId>
-            <version>${jersey-version}</version>
-        </dependency>
-        <!-- <dependency>
-              <groupId>org.glassfish.jersey.containers</groupId>
-              <artifactId>jersey-container-servlet</artifactId>
-              <version>${jersey-version}</version>
-          </dependency>
-          <dependency>
-              <groupId>org.glassfish.jersey.containers</groupId>
-              <artifactId>jersey-container-grizzly2-servlet</artifactId>
-              <version>${jersey-version}</version>
-          </dependency>
-          <dependency>
-              <groupId>org.slf4j</groupId>
-              <artifactId>jul-to-slf4j</artifactId>
-              <version>1.7.2</version>
-          </dependency>
-          <dependency>
-              <groupId>org.skyscreamer</groupId>
-              <artifactId>jsonassert</artifactId>
-              <version>1.1.1</version>
-              <scope>test</scope>
-          </dependency>       -->
-        <dependency>
-            <groupId>org.eclipse.jetty</groupId>
-            <artifactId>jetty-webapp</artifactId>
-            <version>9.1.0.M0</version>
-        </dependency>
+          </dependency>   
+        -->
         <dependency>
             <groupId>com.github.jsonld-java</groupId>
             <artifactId>jsonld-java-jena</artifactId>
             <version>0.2</version>
+            <exclusions>
+                <!-- Exclude all recursive logging deps -->
+                <exclusion>
+                    <artifactId>slf4j-api</artifactId>
+                    <groupId>org.slf4j</groupId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-log4j12</artifactId>
+                </exclusion>
+                <!-- This conflicts with the version in jena -->
+                <exclusion>
+                    <artifactId>org.apache.httpcomponents</artifactId>
+                    <groupId>httpcomponents-client</groupId>
+                </exclusion>
+            </exclusions> 
         </dependency>
     </dependencies>
     <build>
@@ -412,5 +339,4 @@
             <url>http://repo1.maven.org/maven2</url>
         </repository>
     </repositories>
-
 </project>
