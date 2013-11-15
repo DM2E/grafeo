@@ -84,7 +84,7 @@ public abstract class SerializablePojo<T> {
 	 *
 	 * @return Grafeo
 	 */
-	public Grafeo getGrafeo() {
+	public synchronized Grafeo getGrafeo() {
 		GrafeoImpl g = new GrafeoImpl();
 		g.getObjectMapper().addObject(this);
 		return g;
@@ -129,9 +129,9 @@ public abstract class SerializablePojo<T> {
     @RDFId
 	private String id;
 	public String getId() { return id; }
-	public void setId(String id) { this.id = id; }
-	public void setId(URI wsUri) { this.id = wsUri.toString(); }
-	public void resetId() { this.setId((String)null); }
+	public synchronized void setId(String id) { this.id = id; }
+	public synchronized void setId(URI wsUri) { this.id = wsUri.toString(); }
+	public synchronized void resetId() { this.setId((String)null); }
 	public boolean hasId() { return this.getId() != null; }
 	public URI getIdAsURI() {
 		URI uri = null;
@@ -149,7 +149,7 @@ public abstract class SerializablePojo<T> {
     @RDFProperty(NS.RDFS.PROP_LABEL)
     private String label;
     public String getLabel() { return label; }
-	public void setLabel(String label) { this.label = label; }
+	public synchronized void setLabel(String label) { this.label = label; }
 	public boolean hasLabel() { return this.label != null; }
     public String getLabelorURI() { return hasLabel()?getLabel():getId(); }
 
@@ -159,7 +159,7 @@ public abstract class SerializablePojo<T> {
     @RDFProperty(NS.RDFS.PROP_COMMENT)
     private String comment;
     public String getComment() { return comment; }
-    public void setComment(String comment) { this.comment= comment; }
+    public synchronized void setComment(String comment) { this.comment= comment; }
     public boolean hasComment() { return this.comment != null; }
 
 
@@ -169,7 +169,7 @@ public abstract class SerializablePojo<T> {
 //    @RDFProperty(NS.RDFS.PROP_LABEL)
     private String uuid = UUID.randomUUID().toString();
     public String getUuid() { return uuid; }
-	public void setUuid(String uuid) { this.uuid = uuid; }
+	public synchronized void setUuid(String uuid) { this.uuid = uuid; }
 	public boolean hasUuid() { return this.uuid != null; }
 
 	/**
