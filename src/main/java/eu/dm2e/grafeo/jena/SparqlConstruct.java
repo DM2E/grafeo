@@ -116,6 +116,7 @@ public class SparqlConstruct {
         exec.execConstruct(grafeo.getModel());
         long estimatedTime = System.currentTimeMillis() - startTime;
         if (estimatedTime > WARN_TIME) {
+        	log.warn("Long-running CONSTRUCT query (built): {}", toString());
 	        log.warn(LogbackMarkers.TRACE_TIME, "CONSTRUCT took " + estimatedTime + "ms.");
         } else {
 	        log.trace(LogbackMarkers.TRACE_TIME, "CONSTRUCT took " + estimatedTime + "ms: ");
