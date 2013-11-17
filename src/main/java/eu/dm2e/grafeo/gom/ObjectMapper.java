@@ -495,7 +495,8 @@ public class ObjectMapper {
 			
 			GValue contentValue = currentItem.get(NS.CO.PROP_ITEM_CONTENT);
 			if (null == contentValue) {
-				throw new RuntimeException("Item content of item #" + i + " of field '" + field.getName() + "' is null.");
+				log.error("Item content of item #" + i + " of field '" + field.getName() + "' is null.");
+				break;
 			}
 			
 			// if its a literal
@@ -518,6 +519,10 @@ public class ObjectMapper {
 
 			// keep index
 			i++;
+		}
+		
+		if (propArray.isEmpty()) {
+			return;
 		}
 		
 		try{
