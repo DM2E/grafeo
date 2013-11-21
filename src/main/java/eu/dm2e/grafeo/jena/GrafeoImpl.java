@@ -1,40 +1,5 @@
 package eu.dm2e.grafeo.jena;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStreamWriter;
-import java.io.StringWriter;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-import java.util.UUID;
-
-import javax.ws.rs.client.Entity;
-
-import org.apache.commons.beanutils.PropertyUtils;
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.github.jsonldjava.core.JSONLD;
@@ -43,24 +8,8 @@ import com.github.jsonldjava.core.Options;
 import com.github.jsonldjava.impl.JenaRDFParser;
 import com.github.jsonldjava.utils.JSONUtils;
 import com.hp.hpl.jena.query.ResultSet;
-import com.hp.hpl.jena.rdf.model.AnonId;
-import com.hp.hpl.jena.rdf.model.Literal;
-import com.hp.hpl.jena.rdf.model.Model;
-import com.hp.hpl.jena.rdf.model.ModelFactory;
-import com.hp.hpl.jena.rdf.model.NodeIterator;
-import com.hp.hpl.jena.rdf.model.Property;
-import com.hp.hpl.jena.rdf.model.RDFNode;
-import com.hp.hpl.jena.rdf.model.ResIterator;
-import com.hp.hpl.jena.rdf.model.Resource;
-import com.hp.hpl.jena.rdf.model.Statement;
-import com.hp.hpl.jena.rdf.model.StmtIterator;
-
-import eu.dm2e.grafeo.GLiteral;
-import eu.dm2e.grafeo.GResource;
-import eu.dm2e.grafeo.GStatement;
-import eu.dm2e.grafeo.GValue;
-import eu.dm2e.grafeo.Grafeo;
-import eu.dm2e.grafeo.SkolemizationMethod;
+import com.hp.hpl.jena.rdf.model.*;
+import eu.dm2e.grafeo.*;
 import eu.dm2e.grafeo.annotations.Namespaces;
 import eu.dm2e.grafeo.annotations.RDFId;
 import eu.dm2e.grafeo.gom.ObjectMapper;
@@ -68,6 +17,20 @@ import eu.dm2e.grafeo.util.Config;
 import eu.dm2e.grafeo.util.DM2E_MediaType;
 import eu.dm2e.grafeo.util.LogbackMarkers;
 import eu.dm2e.grafeo.util.NS;
+import org.apache.commons.beanutils.PropertyUtils;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.ws.rs.client.Entity;
+import java.io.*;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.*;
+import java.util.Map.Entry;
 
 public class GrafeoImpl extends JenaImpl implements Grafeo {
 
@@ -231,7 +194,11 @@ public class GrafeoImpl extends JenaImpl implements Grafeo {
         this.load(uri.toString());
     }
 
-	@Override
+	// TODO: Memory leak! This could be smarter, e.g., at least for FileInputStreams
+	// a conversion to a String would
+    // not be necessary. Also check the mark/reset mechanism of InputStream to improve
+    // memory consumption.
+    @Override
     public void readHeuristically(String contentStr) {
         try {
             this.model.read(IOUtils.toInputStream(contentStr), null, "N3");
