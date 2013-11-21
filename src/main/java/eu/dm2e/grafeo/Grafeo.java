@@ -524,6 +524,8 @@ public interface Grafeo {
 
 	boolean containsTriple(URI s, String p, String o);
 
+	void readFromEndpoint(String endpoint, String graph, int expansionSteps, int retryCount);
+
 
 
 }

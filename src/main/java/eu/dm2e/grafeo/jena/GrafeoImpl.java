@@ -278,7 +278,7 @@ public class GrafeoImpl extends JenaImpl implements Grafeo {
         if ( Config.getConfig().getBoolean(NO_EXTERNAL_URL_FLAG, false)
         		&& ! uri.startsWith(Config.get(BASE_URI))) {
         	log.debug(NO_EXTERNAL_URL_FLAG + ": " + Config.getConfig().getBoolean(NO_EXTERNAL_URL_FLAG));
-        	log.debug(BASE_URI + ": " + Config.getConfig().getBoolean(BASE_URI));
+        	log.debug(BASE_URI + ": " + Config.get(BASE_URI));
         	log.warn("Skipping loading of " + uri 
         			+ " because " + NO_EXTERNAL_URL_FLAG + " config option is set to true and "
         			+ uri + " startsWith " + Config.get(BASE_URI) + " ."
@@ -585,9 +585,13 @@ public class GrafeoImpl extends JenaImpl implements Grafeo {
             return uri;
         return "<" + uri + ">";
     }
-
     @Override
     public void readFromEndpoint(String endpoint, String graph, int expansionSteps) {
+    	readFromEndpoint(endpoint, graph, expansionSteps, RETRY_COUNT);
+    }
+
+    @Override
+    public void readFromEndpoint(String endpoint, String graph, int expansionSteps, int retryCount) {
     	SparqlConstruct sparco = new SparqlConstruct.Builder()
     		.construct("?s ?p ?o")
     		.where("?s ?p ?o")
@@ -601,16 +605,15 @@ public class GrafeoImpl extends JenaImpl implements Grafeo {
         long stmtsAdded = 0;
 
         boolean success = false;
-        int count = RETRY_COUNT;
         // Workaround to avoid the empty graph directly after a publish and other bad things that happen in the web.
-        while (count>0 && !success) {
+        while (retryCount>0 && !success) {
         	sparco.execute(this);
             stmtsAdded = size() - sizeBefore;
             if (stmtsAdded > 0) {
                 success = true;
             } else {
-                count--;
-                log.info("No statements found, I try again... Count: " + count);
+                retryCount--;
+                log.info("No statements found, I try again... Count: " + retryCount);
                 try {
                     Thread.sleep(500);
                 } catch (InterruptedException e) {
