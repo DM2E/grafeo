@@ -22,6 +22,7 @@ import eu.dm2e.grafeo.annotations.Namespaces;
 import eu.dm2e.grafeo.annotations.RDFClass;
 import eu.dm2e.grafeo.annotations.RDFId;
 import eu.dm2e.grafeo.annotations.RDFProperty;
+import eu.dm2e.grafeo.jena.GResourceImpl;
 import eu.dm2e.grafeo.util.NS;
 import eu.dm2e.grafeo.util.PojoUtils;
 
@@ -356,7 +357,7 @@ public class ObjectMapper {
 						&&
 						field.getAnnotation(RDFProperty.class).serializeAsURI()
 				  ){
-				GResource itemContentRes = getGResource(itemResource);
+				GResource itemContentRes = getGResource(itemContent);
 				if (itemContentRes.isAnon()) {
 					log.warn("This element of " + property + " has no id: " + itemContent);
 					continue;
@@ -609,8 +610,15 @@ public class ObjectMapper {
      */
     private GResource getGResource(Object object) {
         String uri = null;
-        log.trace("Getting GResource for object " + object);
+        log.trace("Getting GResource for object " + object + " [" + object.getClass() + "]");
+        
+//        if (GResource.class.isAssignableFrom(object.getClass())) {
+//        	log.trace("The object is already a GResource");
+//        	return (GResource)object;
+//        }
+//        
         if (objectCache.containsKey(object)) {
+        	log.trace("Found in object cache: " + object);
         	return objectCache.get(object);
         }
 
