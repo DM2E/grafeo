@@ -9,6 +9,7 @@ import com.github.jsonldjava.impl.JenaRDFParser;
 import com.github.jsonldjava.utils.JSONUtils;
 import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.rdf.model.*;
+
 import eu.dm2e.grafeo.*;
 import eu.dm2e.grafeo.annotations.Namespaces;
 import eu.dm2e.grafeo.annotations.RDFId;
@@ -17,6 +18,7 @@ import eu.dm2e.grafeo.util.Config;
 import eu.dm2e.grafeo.util.DM2E_MediaType;
 import eu.dm2e.grafeo.util.LogbackMarkers;
 import eu.dm2e.grafeo.util.NS;
+
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
@@ -24,6 +26,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.client.Entity;
+
 import java.io.*;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -37,7 +40,7 @@ public class GrafeoImpl extends JenaImpl implements Grafeo {
     public static final String NO_EXTERNAL_URL_FLAG = "eu.dm2e.grafeo.no_external_url";
     public static final String BASE_URI = "eu.dm2e.grafeo.base_uri";
     private static final String LINE_SEPARATOR = System.getProperty("line.separator");
-
+    
     private static long RETRY_INTERVAL = 500;
 	public static long getRETRY_INTERVAL() { return RETRY_INTERVAL; }
 	public static void setRETRY_INTERVAL(long rETRY_INTERVAL) { RETRY_INTERVAL = rETRY_INTERVAL; }
@@ -51,6 +54,8 @@ public class GrafeoImpl extends JenaImpl implements Grafeo {
     private Map<String, String> namespaces = new HashMap<>();
     private Map<String, String> namespacesUsed = new HashMap<>();
     protected ObjectMapper objectMapper;
+    
+    private Set<String> badUriCache = new HashSet<>();
 
 	private static Map<String, String>	staticNamespaces = new HashMap<>();
 	public static void addStaticNamespace(String prefix, String base) { staticNamespaces.put(prefix, base); }
@@ -252,6 +257,10 @@ public class GrafeoImpl extends JenaImpl implements Grafeo {
         			);
             return;
         }
+        if (badUriCache.contains(uri)) {
+        	log.warn("Skipping loading from " + uri + " because it failed before.");
+        	return;
+        }
         log.debug("Load data from URI: " + uri);
         uri = expand(uri);
         int count = RETRY_COUNT;
@@ -279,6 +288,7 @@ public class GrafeoImpl extends JenaImpl implements Grafeo {
         }
         if (!success) {
 //        	throw new RuntimeException("After 3 tries I still couldn't make sense from this URI: " + uri);
+        	this.badUriCache.add(uri);
         	return;
         }
         // Expand the graph by recursively loading additional resources
