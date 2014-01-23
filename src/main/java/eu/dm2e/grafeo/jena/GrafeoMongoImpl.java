@@ -50,7 +50,7 @@ public class GrafeoMongoImpl extends GrafeoImpl {
 		if (! MongoSingleton.INSTANCE.mongoClientMap.containsKey(connStr)) {
 			MongoClientOptions mco = new MongoClientOptions.Builder()
 		    .connectionsPerHost(100)
-		    .threadsAllowedToBlockForConnectionMultiplier(10)
+		    .threadsAllowedToBlockForConnectionMultiplier(50)
 		    .build();
 			ServerAddress addr = new ServerAddress(segs[0], Integer.valueOf(segs[1]));
 			final MongoClient newClient = new MongoClient(addr, mco);
