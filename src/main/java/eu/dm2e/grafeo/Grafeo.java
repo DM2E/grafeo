@@ -202,7 +202,7 @@ public interface Grafeo {
 
 	void readFromEndpoint(String endpoint, URI graphURI);
 	void readTriplesFromEndpoint(String endpoint, String subject, String predicate, GValue object);
-	void readTriplesFromEndpoint(String endpointUpdate, String subject, GResource predicate, GValue object);
+//	void readTriplesFromEndpoint(String endpointUpdate, String subject, GResource predicate, GValue object);
 //	void readTriplesFromEndpoint(String endpointUpdate, GResource subject, GResource predicate, GValue object); 
 
 	/**
