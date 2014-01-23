@@ -45,7 +45,7 @@ public class GrafeoImpl extends JenaImpl implements Grafeo {
 	public static long getRETRY_INTERVAL() { return RETRY_INTERVAL; }
 	public static void setRETRY_INTERVAL(long rETRY_INTERVAL) { RETRY_INTERVAL = rETRY_INTERVAL; }
 
-    private static int RETRY_COUNT = 3;
+    protected static int RETRY_COUNT = 3;
 	public static int getRETRY_COUNT() { return RETRY_COUNT; }
 	public static void setRETRY_COUNT(int rETRY_COUNT) { RETRY_COUNT = rETRY_COUNT; }
     
