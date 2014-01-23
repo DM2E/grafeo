@@ -1,5 +1,7 @@
 package eu.dm2e.grafeo.jena;
 
+import java.io.File;
+import java.io.InputStream;
 import java.net.URI;
 import java.net.UnknownHostException;
 import java.util.HashMap;
@@ -7,39 +9,59 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import javax.management.RuntimeErrorException;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
+import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
+import com.mongodb.MongoClientOptions;
+import com.mongodb.ServerAddress;
 
 import eu.dm2e.grafeo.GResource;
+import eu.dm2e.grafeo.GValue;
+import eu.dm2e.grafeo.util.NS;
 
 public class GrafeoMongoImpl extends GrafeoImpl {
-	private MongoClient mongoClient;
-	private transient Logger log = LoggerFactory.getLogger(getClass().getName());
-	private Map<String,DBCollection> dbMap = new HashMap<>();
 	
+	private enum MongoSingleton {
+		INSTANCE ;
+		
+		public final Map<String,MongoClient> mongoClientMap = new HashMap<>();
+		
+	}
+
+	private transient Logger log = LoggerFactory.getLogger(getClass().getName());
+
+    public GrafeoMongoImpl() { super(); }
+    public GrafeoMongoImpl(String uri) { super(uri); }
+    public GrafeoMongoImpl(String uriOrStr, boolean interpretAsContent) { super(uriOrStr, interpretAsContent); }
+    public GrafeoMongoImpl(InputStream input, String lang) { super(input, lang); }
+    public GrafeoMongoImpl(InputStream input) { super(input); }
+    public GrafeoMongoImpl(File file) { super(file); }
+    public GrafeoMongoImpl(String input, String lang) { super(input, lang); }
+	public GrafeoMongoImpl(URI uri) { super(uri); }
 	private DBCollection getMongoColl(String connStr) throws NumberFormatException, UnknownHostException {
-		if (! dbMap.containsKey(connStr)) {
-			String[] segs = connStr.split(":");
-			assert(segs.length == 4);
-			MongoClient client = new MongoClient(segs[0], Integer.valueOf(segs[1]));
-			final DB db = client.getDB(segs[2]);
-			dbMap.put(connStr, db.getCollection(segs[3]));
+		String[] segs = connStr.split(":");
+		assert(segs.length == 4);
+		if (! MongoSingleton.INSTANCE.mongoClientMap.containsKey(connStr)) {
+			MongoClientOptions mco = new MongoClientOptions.Builder()
+		    .connectionsPerHost(100)
+		    .threadsAllowedToBlockForConnectionMultiplier(10)
+		    .build();
+			ServerAddress addr = new ServerAddress(segs[0], Integer.valueOf(segs[1]));
+			final MongoClient newClient = new MongoClient(addr, mco);
+			MongoSingleton.INSTANCE.mongoClientMap.put(connStr, newClient);
 		}
-		return dbMap.get(connStr);
+		final DB db = MongoSingleton.INSTANCE.mongoClientMap.get(connStr).getDB(segs[2]);
+		return db.getCollection(segs[3]);
 	}
 	
 	private String mongoifyURI(String uri) { return uri.replaceAll(":", "__COLON__"); }
 	private String unMongoifyURI(String uri) { return uri.replaceAll("__COLON__", ":"); }
-	
-	public GrafeoMongoImpl() { super(); }
 	
 	@Override
 	public void emptyGraph(String endpoint, String graph) {
@@ -66,6 +88,13 @@ public class GrafeoMongoImpl extends GrafeoImpl {
 	@Override
 	public void putToEndpoint(String endpoint, String graph) {
 		DBCollection coll;
+		String thisType;
+		GValueImpl thisTypeVal = this.firstMatchingObject(graph, NS.RDF.PROP_TYPE);
+		if (null == thisTypeVal)
+			thisType = "";
+		else
+			thisType = thisTypeVal.resource().toString();
+
 		try {
 			coll = getMongoColl(endpoint);
 			BasicDBObject needle = new BasicDBObject();
@@ -73,6 +102,7 @@ public class GrafeoMongoImpl extends GrafeoImpl {
 			BasicDBObject insert = new BasicDBObject();
 			insert.put("graph", mongoifyURI(graph));
 			insert.put("data", this.getNTriples());
+			insert.put("type", thisType);
 			coll.update(needle, insert, true, false);
 		} catch (NumberFormatException | UnknownHostException e) {
 			final String msg = "Couldn't connect to MongoDB: " +  endpoint;
@@ -140,4 +170,33 @@ public class GrafeoMongoImpl extends GrafeoImpl {
 	@Override public void readFromEndpoint(URI endpoint, String graph) { this.readFromEndpoint(endpoint.toString(), graph); }
 	@Override public void readFromEndpoint(URI endpoint, URI graph) { this.readFromEndpoint(endpoint.toString(), graph.toString()); }
 	@Override public void readFromEndpoint(String endpoint, String graph) { this.readFromEndpoint(endpoint, graph, 0); }
+	
+	@Override
+	public void readTriplesFromEndpoint(String endpoint,
+			String subject,
+			String predicate,
+			GValue object) {
+		if (! NS.RDF.PROP_TYPE.equals(predicate)) {
+			throw new RuntimeException("readTriplesFromEndpoint can only handle rdf:type for now");
+		}
+		DBCollection coll;
+		try {
+			coll = getMongoColl(endpoint);
+			BasicDBObject needle = new BasicDBObject();
+			needle.put("type", object.resource().toString());
+			// upsert
+			DBCursor cursor = coll.find(needle);
+			DBObject doc;
+			while (cursor.hasNext()) {
+				doc = cursor.next();
+				this.readHeuristically(doc.get("data").toString());
+			}
+		} catch (NumberFormatException | UnknownHostException e) {
+			final String msg = "Couldn't connect to MongoDB: " +  endpoint;
+			log.error(msg, e);
+			e.printStackTrace();
+			throw new RuntimeException(msg, e);
+		}
+	}
+	
 }

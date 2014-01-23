@@ -16,7 +16,7 @@ import eu.dm2e.grafeo.Grafeo;
 import eu.dm2e.grafeo.annotations.RDFClass;
 import eu.dm2e.grafeo.annotations.RDFId;
 import eu.dm2e.grafeo.annotations.RDFProperty;
-import eu.dm2e.grafeo.jena.GrafeoImpl;
+import eu.dm2e.grafeo.jena.GrafeoMongoImpl;
 import eu.dm2e.grafeo.json.GrafeoJsonSerializer;
 import eu.dm2e.grafeo.util.DM2E_MediaType;
 import eu.dm2e.grafeo.util.NS;
@@ -50,7 +50,7 @@ public abstract class SerializablePojo<T> {
 	public String getRDFClassUri() {
         if (this.getClass().isAnnotationPresent(RDFClass.class)) {
         	String uri = this.getClass().getAnnotation(RDFClass.class).value();
-        	uri = new GrafeoImpl().expand(uri);
+        	uri = new GrafeoMongoImpl().expand(uri);
         	return uri;
         }
         return null;
@@ -85,7 +85,7 @@ public abstract class SerializablePojo<T> {
 	 * @return Grafeo
 	 */
 	public synchronized Grafeo getGrafeo() {
-		GrafeoImpl g = new GrafeoImpl();
+		GrafeoMongoImpl g = new GrafeoMongoImpl();
 		g.getObjectMapper().addObject(this);
 		return g;
 	}
