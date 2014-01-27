@@ -10,6 +10,8 @@ import java.util.Set;
 
 import javax.ws.rs.client.Entity;
 
+import org.joda.time.DateTime;
+
 import com.github.jsonldjava.core.Options;
 
 import eu.dm2e.grafeo.gom.ObjectMapper;
@@ -27,6 +29,12 @@ import eu.dm2e.grafeo.jena.GResourceImpl;
  */
 public interface Grafeo {
 	GResource findTopBlank();
+	
+	/**
+	 * Retrieve the date this Grafeo was last modified.
+	 * @return @{org.joda.time.DateTime} of last modification
+	 */
+	DateTime lastModified(); 
 
     void setNamespace(String prefix, String namespace);
 

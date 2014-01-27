@@ -22,6 +22,7 @@ import eu.dm2e.grafeo.util.NS;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -1454,5 +1455,15 @@ public class GrafeoImpl extends JenaImpl implements Grafeo {
 	@Override
 	public GResource blank() {
 		return createBlank();
+	}
+
+	/**
+	 * In a triplestore-backed backend like GrafeoImpl, last modification time isn't feasible in a generic way.
+	 * @return <b>Current</b> time as a joda DateTime
+	 * @see eu.dm2e.grafeo.Grafeo#lastModified()
+	 */
+	@Override
+	public DateTime lastModified() {
+		return DateTime.now();
 	}
 }
