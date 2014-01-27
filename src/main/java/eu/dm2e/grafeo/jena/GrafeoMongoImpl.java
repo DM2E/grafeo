@@ -87,14 +87,19 @@ public class GrafeoMongoImpl extends GrafeoImpl {
 	
 	@Override
 	public void putToEndpoint(String endpoint, String graph) {
+		final Map<String, String> indexSparqls = new HashMap<String,String>();
+		putToEndpoint(endpoint, graph, indexSparqls);
+	}
+	
+	public void putToEndpoint(String endpoint, String graph, Map<String,String> indexSparqls) {
 		DBCollection coll;
 		String thisType;
 		GValueImpl thisTypeVal = this.firstMatchingObject(graph, NS.RDF.PROP_TYPE);
+		// TODO handle indexSparqls for building full text search
 		if (null == thisTypeVal)
 			thisType = "";
 		else
 			thisType = thisTypeVal.resource().toString();
-
 		try {
 			coll = getMongoColl(endpoint);
 			BasicDBObject needle = new BasicDBObject();
