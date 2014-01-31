@@ -4,11 +4,13 @@ import java.io.File;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.UnknownHostException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,6 +29,8 @@ import eu.dm2e.grafeo.util.NS;
 
 public class GrafeoMongoImpl extends GrafeoImpl {
 	
+	private DateTime lastModified = DateTime.now();
+	
 	private enum MongoSingleton {
 		INSTANCE ;
 		
@@ -37,7 +41,7 @@ public class GrafeoMongoImpl extends GrafeoImpl {
 	private transient Logger log = LoggerFactory.getLogger(getClass().getName());
 
     public GrafeoMongoImpl() { super(); }
-    public GrafeoMongoImpl(String uri) { super(uri); }
+    public GrafeoMongoImpl(String uri) { this(uri, false); }
     public GrafeoMongoImpl(String uriOrStr, boolean interpretAsContent) { super(uriOrStr, interpretAsContent); }
     public GrafeoMongoImpl(InputStream input, String lang) { super(input, lang); }
     public GrafeoMongoImpl(InputStream input) { super(input); }
@@ -108,6 +112,7 @@ public class GrafeoMongoImpl extends GrafeoImpl {
 			insert.put("graph", mongoifyURI(graph));
 			insert.put("data", this.getNTriples());
 			insert.put("type", thisType);
+			insert.put("lastModified", lastModified.toDate());
 			coll.update(needle, insert, true, false);
 		} catch (NumberFormatException | UnknownHostException e) {
 			final String msg = "Couldn't connect to MongoDB: " +  endpoint;
@@ -133,8 +138,13 @@ public class GrafeoMongoImpl extends GrafeoImpl {
 				log.warn("No such graph <{}> found in MongoDB collection '{}' ", graph, endpoint);
 				return;
 			}
-			String serialized = (String) doc.get("data");
-			this.readHeuristically(serialized);
+			DateTime docLastModified = new DateTime((Date)doc.get("lastModified"));
+			if (docLastModified.isAfter(lastModified)) {
+				String serialized = (String) doc.get("data");
+				this.readHeuristically(serialized);
+			} else {
+				log.debug("Nothing changed in the database so we don't have to re-read it");
+			}
 		} catch (NumberFormatException | UnknownHostException e) {
 			final String msg = "Couldn't connect to MongoDB: " +  endpoint;
 			log.error(msg, e);
@@ -204,4 +214,8 @@ public class GrafeoMongoImpl extends GrafeoImpl {
 		}
 	}
 	
+	@Override
+	public DateTime lastModified() {
+		return lastModified;
+	}
 }

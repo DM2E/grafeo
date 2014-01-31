@@ -70,7 +70,7 @@ import eu.dm2e.grafeo.util.DM2E_MediaType;
 import eu.dm2e.grafeo.util.LogbackMarkers;
 import eu.dm2e.grafeo.util.NS;
 
-public class GrafeoImpl extends JenaImpl implements Grafeo {
+public abstract class GrafeoImpl extends JenaImpl implements Grafeo {
 
     public static final String NO_EXTERNAL_URL_FLAG = "eu.dm2e.grafeo.no_external_url";
     public static final String BASE_URI = "eu.dm2e.grafeo.base_uri";
@@ -922,7 +922,7 @@ public class GrafeoImpl extends JenaImpl implements Grafeo {
 
     @Override
     public boolean containsTriple(String s, String p, GLiteral o) {
-    	GrafeoImpl temp = new GrafeoImpl();
+    	GrafeoImpl temp = this();
     	temp.addTriple(s, p, o);
     	return this.containsAllStatementsFrom(temp);
     }
