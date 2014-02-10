@@ -109,6 +109,11 @@
             <artifactId>mongo-java-driver</artifactId>
             <version>2.11.3</version>
         </dependency>
+        <dependency>
+            <groupId>org.mapdb</groupId>
+            <artifactId>mapdb</artifactId>
+            <version>0.9.9</version>
+        </dependency>
         <!--
           <dependency>
               <groupId>org.jvnet.mimepull</groupId>
