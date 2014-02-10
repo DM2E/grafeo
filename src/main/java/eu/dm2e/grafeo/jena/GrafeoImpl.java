@@ -14,10 +14,7 @@ import eu.dm2e.grafeo.*;
 import eu.dm2e.grafeo.annotations.Namespaces;
 import eu.dm2e.grafeo.annotations.RDFId;
 import eu.dm2e.grafeo.gom.ObjectMapper;
-import eu.dm2e.grafeo.util.Config;
-import eu.dm2e.grafeo.util.DM2E_MediaType;
-import eu.dm2e.grafeo.util.LogbackMarkers;
-import eu.dm2e.grafeo.util.NS;
+import eu.dm2e.grafeo.util.*;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.io.IOUtils;
@@ -89,12 +86,8 @@ public class GrafeoImpl extends JenaImpl implements Grafeo {
 
     public GrafeoImpl(InputStream input) {
         this(ModelFactory.createDefaultModel());
-        try {
-			this.readHeuristically(input);
-		} catch (IOException e) {
-			log.error("Could not read from input stream.");
-//			throw(e);
-		}
+        	this.readHeuristically(input);
+
     }
 
     public GrafeoImpl(File file) {
@@ -205,12 +198,17 @@ public class GrafeoImpl extends JenaImpl implements Grafeo {
     // not be necessary. Also check the mark/reset mechanism of InputStream to improve
     // memory consumption.
     @Override
-    public void readHeuristically(String contentStr) {
+    public void readHeuristically(InputStream input) {
+        ResettableInputStream ris = new ResettableInputStream(input,true);
+        ris.mark(1000000);
         try {
-            this.model.read(IOUtils.toInputStream(contentStr), null, "N3");
+            this.model.read(ris, null, "N3");
+            ris.closeActually();
         } catch (Throwable t) {
             try {
-                this.model.read(IOUtils.toInputStream(contentStr), null, "RDF/XML");
+                ris.reset();
+                this.model.read(ris, null, "RDF/XML");
+                ris.closeActually();
             } catch (Throwable t2) {
                 // TODO Throw proper exception that is converted to a proper HTTP response in DataService
                 throw new RuntimeException("Could not parse input either as N3 or RDF/XML: \nN3 parser said: " + t + "\nRDF/XML parser said: " + t2);
@@ -219,14 +217,8 @@ public class GrafeoImpl extends JenaImpl implements Grafeo {
     }
 
     @Override
-    public void readHeuristically(InputStream input) throws IOException {
-    	String contentStr;
-		try {
-			contentStr = IOUtils.toString(input);
-		} catch (IOException e) {
-			throw(e);
-		}
-        readHeuristically(contentStr);
+    public void readHeuristically(String contentStr) {
+    	readHeuristically(IOUtils.toInputStream(contentStr));
     }
 
     @Override
