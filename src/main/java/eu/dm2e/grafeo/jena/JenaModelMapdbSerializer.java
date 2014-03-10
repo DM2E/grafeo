@@ -22,11 +22,14 @@ public class JenaModelMapdbSerializer implements Serializer<Model>, Serializable
 
 	@Override
 	public Model deserialize(DataInput in, int available) throws IOException {
-		byte[] buf = new byte[available];
-		in.readFully(buf);
-		ByteArrayInputStream bais = new ByteArrayInputStream(buf);
 		Model model = ModelFactory.createDefaultModel();
-		model.read(bais, "", "N-TRIPLES");
+		if (available > 0) {
+			byte[] buf = new byte[available];
+			in.readFully(buf);
+			ByteArrayInputStream bais = new ByteArrayInputStream(buf);
+			model.read(bais, "", "N-TRIPLES");
+			bais.close();
+		}
 		return model;
 	}
 
@@ -38,7 +41,6 @@ public class JenaModelMapdbSerializer implements Serializer<Model>, Serializable
 
 	@Override
 	public void serialize(DataOutput out, Model model) throws IOException {
-		// TODO Auto-generated method stub
 		OutputStream jenaOut = new ByteArrayOutputStream();
 		model.write(jenaOut, "N-TRIPLES");
 		byte[] buf = new byte[1024];
@@ -46,6 +48,7 @@ public class JenaModelMapdbSerializer implements Serializer<Model>, Serializable
 		for (int read = jenaIn.read(); read > 0 ;) {
 			out.write(buf);
 		}
+		jenaIn.close();
 	}
 	
 }
