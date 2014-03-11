@@ -17,6 +17,7 @@ public class MapdbFileManager extends FileManager {
 		this.mapdb = DBMaker.newTempFileDB().make();
 		this.cache = mapdb.createHashMap("MapdbFileManager-Cache")
 				.valueSerializer(new JenaModelMapdbSerializer())
+				.expireMaxSize(100_000)
 				.make();
 	}
 	
